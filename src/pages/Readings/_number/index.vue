@@ -86,22 +86,19 @@ export default {
           .sort((a, b) =>
             a.length < b.length ? 1 : a.length === b.length ? 0 : -1,
           );
-        console.log(labels);
+
         function getReadings(i, $store) {
-          console.log("i", i);
           const list = labels[i].join(",");
 
           if (i < labels.length) {
             return $store.readings
               .getRelations({ labels: list })
               .then((items) => {
-                const readings = items;
-                // .filter((j) => j.id !== result.id);
+                const readings = items.filter((j) => j.id !== result.id);
                 if (readings.length > 0) {
                   $store.readings.setRelations(readings);
                   i = null;
                 } else {
-                  console.log("lengths", readings.length, i + 1);
                   return getReadings(i + 1, $store);
                 }
               })

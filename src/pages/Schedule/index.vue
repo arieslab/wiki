@@ -62,7 +62,6 @@ export default {
               const text = e
                 .replace(/(## [A-Z]+\s[\d])\w+/is, "")
                 .replace(/(<tr>(\s|\t|\n)*<tr>)/g, "<tr>");
-              console.log(text);
               this.table = text;
             });
           });

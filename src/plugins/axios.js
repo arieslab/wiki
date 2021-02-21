@@ -55,7 +55,6 @@ export class Axios {
       (e.response.status === 401 || e.response.status === 404) &&
       (!router.value || router.value.currentRoute.path !== "/login")
     ) {
-      console.log("xi");
       const TOKEN = localStorage.getItem("token") || "";
       e.config.headers.Authorization = TOKEN ? `token ${TOKEN}` : "";
 

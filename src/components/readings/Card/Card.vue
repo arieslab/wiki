@@ -11,7 +11,7 @@
         >{{ label.name }}</Tag
       >
     </div>
-    <Spacing vertical="2">
+    <Spacing vertical="1">
       <Line />
     </Spacing>
     <p v-html="getText(item.body)" />
@@ -38,7 +38,10 @@ export default {
       };
     },
     getText(text) {
-      return text.split("#summary")[0].replace(/\n/g, "<br />");
+      return text
+        .split("#summary")[0]
+        .replace("#authors", "<h3>Autores</h3>")
+        .replace(/\n/g, "");
     },
     detectUrl(text) {
       //   const match = text.match(

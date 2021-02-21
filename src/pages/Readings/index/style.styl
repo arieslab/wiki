@@ -1,4 +1,4 @@
-.p-schedule
+.p-readings
   max-width 1200px
   margin auto
   display flex
@@ -15,3 +15,23 @@
       & tr
         &:nth-child(odd)
           background-color #f3f3f4
+  &__body
+    display grid
+    grid-template-columns 200px 1fr
+    grid-gap 16px
+
+  &__cards
+    display grid
+    grid-gap 8px
+    grid-template-rows min-content
+    grid-auto-rows min-content
+
+  &__filter
+    display grid
+    grid-gap 4px
+    &-item
+      display flex
+      align-items center
+      gap 6px
+      input, label
+        cursor pointer

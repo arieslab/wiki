@@ -28,7 +28,7 @@ export default class Readings {
     return reading;
   }
 
-  getReadings(page = 1) {
+  getReadings(params) {
     this.ctx.config.globalProperties.$wait.start("get/readings");
 
     return this.ctx.$axios
@@ -38,7 +38,7 @@ export default class Readings {
         },
         params: {
           per_page: 10,
-          page,
+          ...params,
         },
       })
       .then((result) => {
