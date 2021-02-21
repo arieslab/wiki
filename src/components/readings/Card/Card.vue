@@ -1,0 +1,59 @@
+<template>
+  <div class="c-reading-card">
+    <router-link :to="`/leituras/${item.number}`">
+      <h2 class="c-reading-card__title">{{ item.title }}</h2>
+    </router-link>
+    <div class="c-reading-card__tags">
+      <Tag
+        v-for="label in item.labels"
+        :key="label.id"
+        :style="colorfy(label.name)"
+        >{{ label.name }}</Tag
+      >
+    </div>
+    <Spacing vertical="2">
+      <Line />
+    </Spacing>
+    <p v-html="getText(item.body)" />
+  </div>
+</template>
+<script>
+import color from "@/helpers/color";
+
+export default {
+  name: "ReadingCard",
+  props: {
+    item: {
+      type: Object,
+      default: () => {},
+    },
+  },
+  methods: {
+    colorfy(str) {
+      const bg = color.string2Hex(str);
+
+      return {
+        ["background-color"]: bg,
+        color: color.colorContrast(bg, "#FFF", "#000"),
+      };
+    },
+    getText(text) {
+      return text.split("#summary")[0].replace(/\n/g, "<br />");
+    },
+    detectUrl(text) {
+      //   const match = text.match(
+      //     /(^(http(s?)|):\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()[\]{};:'".,<>?«»“”‘’]))?/g,
+      //   );
+      //   console.log(match);
+      //   match.forEach((i) => {
+      //     text = text.replace(
+      //       i,
+      //       `<a href="${i}" target="_blank" rel="unfollow">${i}</a>`,
+      //     );
+      //   });
+      return text;
+    },
+  },
+};
+</script>
+<style src="./style.styl" lang="stylus" scoped />

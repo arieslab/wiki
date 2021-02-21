@@ -21,8 +21,9 @@ export class Axios {
       } else {
         TOKEN = localStorage.getItem("token") || "";
       }
-
-      config.headers.Authorization = TOKEN ? `Bearer ${TOKEN}` : "";
+      if (TOKEN) {
+        config.headers.Authorization = `token ${TOKEN}`;
+      }
 
       const url = config.url.split("?")[0];
 
@@ -48,9 +49,16 @@ export class Axios {
       return;
     }
 
-    if (e.config && e.response && e.response.status === 401) {
+    if (
+      e.config &&
+      e.response &&
+      (e.response.status === 401 || e.response.status === 404) &&
+      (!router.value || router.value.currentRoute.path !== "/login")
+    ) {
+      console.log("xi");
       const TOKEN = localStorage.getItem("token") || "";
-      e.config.headers.Authorization = TOKEN ? `Bearer ${TOKEN}` : "";
+      e.config.headers.Authorization = TOKEN ? `token ${TOKEN}` : "";
+
       const retry = axios.create(e.config);
 
       retry.interceptors.response.use(
@@ -62,7 +70,8 @@ export class Axios {
           router.push("/login");
         },
       );
-      return retry.request(e.config);
+
+      return retry(e.config);
     }
 
     return Promise.reject(e);

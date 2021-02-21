@@ -893,6 +893,11 @@
     "stylus" "~0.54.8"
     "stylus-loader" "~3.0.2"
 
+"@meforma/vue-wait-for@^0.0.2":
+  "integrity" "sha512-1gKyZfBRUpB22qjxQjbAu1X9ZfpfeG/I8o/+UXTg4EJc4rgBY2sOMYxaZciqauIu6/ca5YZZXhYZV7qLd12ooA=="
+  "resolved" "https://registry.npmjs.org/@meforma/vue-wait-for/-/vue-wait-for-0.0.2.tgz"
+  "version" "0.0.2"
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   "integrity" "sha512-bPHp6Ji8b41szTOcaP63VlnbbO5Ny6dwAATtY6JTjh5N2OLrb5Qk/Th5cRkRQhkWCt+EJsYrNB0MiL+Gpn6e3g=="
   "resolved" "https://registry.npmjs.org/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz"

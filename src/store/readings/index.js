@@ -1,0 +1,93 @@
+import { reactive } from "vue";
+/**
+ * Readings are issues
+ */
+export default class Readings {
+  constructor(ctx) {
+    this.ctx = ctx;
+
+    this.state = reactive({
+      readings: null,
+      reading: null,
+      relations: null,
+    });
+  }
+
+  setReadings(readings) {
+    this.state.readings = readings;
+    return readings;
+  }
+
+  setRelations(relations) {
+    this.state.relations = relations;
+    return relations;
+  }
+
+  setReading(reading) {
+    this.state.reading = reading;
+    return reading;
+  }
+
+  getReadings(page = 1) {
+    this.ctx.config.globalProperties.$wait.start("get/readings");
+
+    return this.ctx.$axios
+      .get("/repos/arieslab/study-database/issues", {
+        headers: {
+          Accept: "application/vnd.github.squirrel-girl-preview",
+        },
+        params: {
+          per_page: 10,
+          page,
+        },
+      })
+      .then((result) => {
+        if (result && result.data) {
+          return this.setReadings(result.data);
+        }
+      })
+      .finally(() => {
+        this.ctx.config.globalProperties.$wait.end("get/readings");
+      });
+  }
+  getRelations(params) {
+    this.ctx.config.globalProperties.$wait.start("get/relations");
+
+    return this.ctx.$axios
+      .get("/repos/arieslab/study-database/issues", {
+        headers: {
+          Accept: "application/vnd.github.squirrel-girl-preview",
+        },
+        params: {
+          per_page: 5,
+          ...params,
+        },
+      })
+      .then((result) => {
+        if (result && result.data) {
+          return result.data;
+        }
+      })
+      .finally(() => {
+        this.ctx.config.globalProperties.$wait.end("get/relations");
+      });
+  }
+
+  getReading(number) {
+    this.ctx.config.globalProperties.$wait.start("get/reading");
+    return this.ctx.$axios
+      .get(`/repos/arieslab/study-database/issues/${number}`, {
+        headers: {
+          Accept: "application/vnd.github.squirrel-girl-preview",
+        },
+      })
+      .then((result) => {
+        if (result && result.data) {
+          return this.setReading(result.data);
+        }
+      })
+      .finally(() => {
+        this.ctx.config.globalProperties.$wait.end("get/reading");
+      });
+  }
+}

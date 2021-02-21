@@ -1,7 +1,7 @@
 <template>
   <div class="c-navbar">
-    <router-link to="/inicio">
-      <Icon class="c-navbar__logo" name="meforma" :size="50" />
+    <router-link to="/agenda">
+      <Icon class="c-navbar__logo" name="aries" :size="50" />
     </router-link>
     <nav class="c-navbar__nav">
       <ul class="c-navbar__ul">
@@ -22,7 +22,11 @@
             :change-name-on-select="false"
             @change="chooseUserOption"
           >
-            <Icon name="meforma" :size="30" />
+            <!-- <Icon name="aries" :size="30" /> -->
+            <img
+              style="width: 30px; border-radius: 8px"
+              :src="$store.auth.user.avatar_url"
+            />
           </Dropdown>
         </li>
       </ul>
@@ -33,8 +37,8 @@
     <Modal v-if="menuModal" @close="closeMenuModal">
       <template v-slot:header>
         <div class="c-navbar__modal-nav">
-          <router-link to="/inicio" @click="closeMenuModal">
-            <Icon class="c-navbar__logo" name="meforma" :size="30" />
+          <router-link to="/agenda" @click="closeMenuModal">
+            <Icon class="c-navbar__logo" name="aries" :size="30" />
           </router-link>
         </div>
       </template>
@@ -117,8 +121,7 @@ export default {
     },
     userOptions() {
       return [
-        { name: "Editar perfil", to: "/perfil/configuracoes", icon: "edit" },
-        { name: "Ajuda", to: "/ajuda", icon: "help-circle" },
+        { name: "Minhas leituras", to: "/leituras", icon: "book-open" },
         { name: "Sair", value: "logout", icon: "log-out" },
       ];
     },

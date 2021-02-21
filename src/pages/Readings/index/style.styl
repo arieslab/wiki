@@ -1,0 +1,17 @@
+.p-schedule
+  max-width 1200px
+  margin auto
+  display flex
+  flex-direction column
+  gap 8px
+  &__table
+    width 100%
+    & >>> .table
+      width 100%
+      border-collapse collapse
+      & td
+        border 1px solid #f3f4f4
+        padding 8px 12px
+      & tr
+        &:nth-child(odd)
+          background-color #f3f3f4

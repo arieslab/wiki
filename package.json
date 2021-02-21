@@ -10,6 +10,7 @@
   "dependencies": {
     "@jprodrigues70/routerex": "0.0.1",
     "@meforma/vue-toaster": "^1.2.2",
+    "@meforma/vue-wait-for": "^0.0.2",
     "@popperjs/core": "^2.8.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",

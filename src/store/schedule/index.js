@@ -1,16 +1,25 @@
 import { reactive } from "vue";
-
+/**
+ * Schedules are md files called Schedule-2020
+ */
 export default class Schedule {
   constructor(ctx) {
     this.ctx = ctx;
 
     this.state = reactive({
       codes: null,
+      schedule: null,
     });
   }
 
   setCodes(codes) {
     this.state.codes = codes;
+    return codes;
+  }
+
+  setSchedule(schedule) {
+    this.state.schedule = schedule;
+    return schedule;
   }
 
   getCodes() {
@@ -24,5 +33,11 @@ export default class Schedule {
           return this.setCodes(codes);
         }
       });
+  }
+
+  getSchedule({ git_url }) {
+    return this.ctx.$axios.get(git_url).then((result) => {
+      return this.setSchedule(result.data);
+    });
   }
 }

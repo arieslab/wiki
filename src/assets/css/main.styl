@@ -9,15 +9,19 @@ html
   -webkit-font-smoothing antialiased
   -moz-osx-font-smoothing grayscale
   color #2c3e50
-  font-size 16px
+  font-size 14px
   @media (max-width 768px)
-    font-size 14px
+    font-size 13px
 html, body
   padding 0
 
 a
   text-decoration none
   color #067bc2
+  h2
+    color #2c3e50
+    &:hover
+      color darken(#067bc2, 15)
   &:hover
     color darken(#067bc2, 15)
 
@@ -124,8 +128,8 @@ a
 a
   cursor pointer
 :root
-  --default-grey #f3f3f1
-  --darken-default-grey darken(#f3f3f4, 4)
+  --default-grey #e3e3e4
+  --darken-default-grey darken(#e3e3e4, 4)
   --aries-orange #d3522a
 
 

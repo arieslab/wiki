@@ -1,0 +1,48 @@
+.c-discipline-search
+  &__modal
+    &-body
+      max-height 400px
+      overflow-y auto
+      display grid
+      grid-template-columns 1fr
+      grid-gap 8px
+  &__item
+    background-color #f9f7f7
+    padding 16px
+    border-radius 8px
+    opacity 0
+    transition all 0.2s easy
+    animation-name loading
+    animation-duration 1.5s
+    animation-timing-function ease-out
+    animation-iteration-count infinite
+
+    &-key
+      width 76px
+      height 26px
+      border-radius 8px
+      background-color #e9e9e9
+      margin-bottom 8px
+    &-title
+      width 120px
+      height 16px
+      border-radius 8px
+      background-color #e9e9e9
+      margin-bottom 8px
+    &-subtitle
+      width 140px
+      height 12px
+      border-radius 8px
+      background-color #e9e9e9
+      margin-bottom 12px
+    &-hashtag
+      width 85px
+      height 12px
+      border-radius 8px
+      background-color #e9e9e9
+@keyframes loading
+  from
+    opacity 0
+
+  to
+    opacity 1

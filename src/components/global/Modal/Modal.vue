@@ -10,10 +10,10 @@
           <slot name="header">
             <div>
               <h1 v-if="title" class="c-modal__window-title">
-                {{ title || '' }}
+                {{ title || "" }}
               </h1>
               <p v-if="subtitle" class="c-modal__window-subtitle">
-                {{ subtitle || '' }}
+                {{ subtitle || "" }}
               </p>
             </div>
             <div class="v--flex-align-right">
@@ -32,67 +32,71 @@
   </teleport>
 </template>
 <script>
-import Button from '../Button/Button.vue'
+import Button from "../Button/Button.vue";
 export default {
   components: { Button },
-  name: 'Modal',
+  name: "Modal",
   props: {
     title: {
       type: String,
-      default: ''
+      default: "",
     },
     subtitle: {
       type: String,
-      default: ''
+      default: "",
     },
     small: {
       type: Boolean,
-      default: false
+      default: false,
     },
     medium: {
       type: Boolean,
-      default: false
+      default: false,
+    },
+    top: {
+      type: Boolean,
+      default: false,
     },
     ignoreHeaderPadding: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  emits: ['close'],
+  emits: ["close"],
   data() {
     return {
       body: null,
-      before: null
-    }
+      before: null,
+    };
   },
   computed: {
     classes() {
       return {
-        'c-modal--small': this.small,
-        'c-modal--medium': this.medium,
-        'c-modal--ignore-header-padding': this.ignoreHeaderPadding,
-        'v--dark': this.$store.settings.darkMode
-      }
-    }
+        "c-modal--small": this.small,
+        "c-modal--medium": this.medium,
+        "c-modal--top": this.top,
+        "c-modal--ignore-header-padding": this.ignoreHeaderPadding,
+      };
+    },
   },
   mounted() {
-    this.body = document.getElementsByTagName('body')[0]
-    this.before = this.body.style.overflow
-    this.body.style.overflow = 'hidden'
-    document.addEventListener('keydown', this.keyHandler)
+    this.body = document.getElementsByTagName("body")[0];
+    this.before = this.body.style.overflow;
+    this.body.style.overflow = "hidden";
+    document.addEventListener("keydown", this.keyHandler);
   },
   unmounted() {
-    this.body.style.overflow = this.before
-    document.removeEventListener('keydown', this.keyHandler)
+    this.body.style.overflow = this.before;
+    document.removeEventListener("keydown", this.keyHandler);
   },
   methods: {
     keyHandler({ key }) {
-      if (key === 'Escape') {
-        document.removeEventListener('keydown', this.keyHandler)
-        this.$emit('close')
+      if (key === "Escape") {
+        document.removeEventListener("keydown", this.keyHandler);
+        this.$emit("close");
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 <style src="./style.styl" lang="stylus" scoped />
