@@ -50,6 +50,31 @@ export default class Readings {
         this.ctx.config.globalProperties.$wait.end("get/readings");
       });
   }
+
+  searchReadings({ q, labels }) {
+    this.ctx.config.globalProperties.$wait.start("get/readings");
+    const lbls = labels.map((i) => `label:"${i}"`).join(" ");
+    const query = `${q} repo:arieslab/study-database is:issue in:title,body ${lbls}`;
+    return this.ctx.$axios
+      .get("/search/issues", {
+        headers: {
+          Accept: "application/vnd.github.squirrel-girl-preview",
+        },
+        params: {
+          per_page: 10,
+          q: query,
+        },
+      })
+      .then((result) => {
+        if (result && result.data) {
+          return this.setReadings(result.data.items);
+        }
+      })
+      .finally(() => {
+        this.ctx.config.globalProperties.$wait.end("get/readings");
+      });
+  }
+
   getRelations(params) {
     this.ctx.config.globalProperties.$wait.start("get/relations");
 

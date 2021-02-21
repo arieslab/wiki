@@ -1,10 +1,27 @@
 <template>
   <div class="p-readings">
-    <Spacing bottom="2" class="v--flex" style="gap: 8px">
-      <Search class="v--flex-align-right" />
-      <Button class="v--bg-aries-orange" to="/leituras/opcoes/nova">
-        Adicionar Leitura
-      </Button>
+    <Spacing bottom="2" class="v--flex">
+      <div class="v--flex v--flex-align-right" style="gap: 8px">
+        <Field
+          style="width: 300px"
+          type="search"
+          autocapitalize="off"
+          autocomplete="off"
+          autocorrect="off"
+          name="q"
+          placeholder="Pesquise por título ou texto"
+          v-model="q"
+          sublabel="Mínimo de 3 caracteres"
+          @input="search"
+        />
+        <Button
+          class="v--bg-aries-orange"
+          to="/leituras/opcoes/nova"
+          style="min-width: 150px"
+        >
+          Adicionar Leitura
+        </Button>
+      </div>
     </Spacing>
     <div class="p-readings__body">
       <div>
@@ -51,9 +68,8 @@
 <script>
 import Card from "@/components/readings/Card/Card.vue";
 import CardLoading from "@/components/readings/Card/Loading.vue";
-import Search from "@/components/readings/Search/Search.vue";
 export default {
-  components: { Card, CardLoading, Search },
+  components: { Card, CardLoading },
   name: "Readings",
   route: "/leituras",
   layout: "painel",
@@ -61,6 +77,7 @@ export default {
     return {
       table: "",
       labels: [],
+      q: "",
     };
   },
   computed: {},
@@ -83,7 +100,29 @@ export default {
         ...this.$route,
         query: { ...this.$route.query, labels: this.labels.join(",") },
       });
-      this.$store.readings.getReadings({ labels: this.labels.join(",") });
+      if (this.q && this.q.length >= 3) {
+        this.search();
+      } else {
+        this.$store.readings.getReadings({ labels: this.labels.join(",") });
+      }
+    },
+    search() {
+      if (!this.q) {
+        this.$router.replace({
+          ...this.$route,
+          query: { ...this.$route.query, q: "" },
+        });
+        this.$store.readings.getReadings({ labels: this.labels.join(",") });
+        return;
+      }
+
+      if (this.q.length >= 3 || !this.q) {
+        this.$router.replace({
+          ...this.$route,
+          query: { ...this.$route.query, q: this.q },
+        });
+        this.$store.readings.searchReadings({ q: this.q, labels: this.labels });
+      }
     },
   },
 };
