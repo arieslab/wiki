@@ -2,7 +2,7 @@
   <div class="p-schedule">
     <Spacing bottom="2" class="v--flex" style="gap: 8px">
       <Search class="v--flex-align-right" />
-      <Button class="v--bg-aries-orange">
+      <Button class="v--bg-aries-orange" to="/leituras/opcoes/nova">
         Adicionar Leitura
       </Button>
     </Spacing>

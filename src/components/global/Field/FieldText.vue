@@ -9,7 +9,6 @@
         class="c-field__input"
         :class="{
           'c-field__input--large': large,
-          'v--dark': $store.settings.darkMode
         }"
         :disabled="disabled"
         :required="required"
@@ -28,74 +27,74 @@
 </template>
 <script>
 export default {
-  name: 'FieldText',
-  emits: ['update:modelValue'],
+  name: "FieldText",
+  emits: ["update:modelValue"],
   props: {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     placeholder: {
       type: String,
-      default: ''
+      default: "",
     },
     rows: {
       type: [Number, String],
-      default: 2
+      default: 2,
     },
     autocapitalize: {
       type: String,
-      default: ''
+      default: "",
     },
     autocorrect: {
       type: String,
-      default: ''
+      default: "",
     },
     label: {
       type: String,
-      default: ''
+      default: "",
     },
     value: {
       type: [Number, String],
-      default: ''
+      default: "",
     },
     sublabel: {
       type: String,
-      default: ''
+      default: "",
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     required: {
       type: Boolean,
-      default: false
+      default: false,
     },
     large: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
       passwordIsVisible: false,
-      inputValue: this.value
-    }
+      inputValue: this.value,
+    };
   },
   computed: {
     fieldId() {
-      return `field-${this.name}`
-    }
+      return `field-${this.name}`;
+    },
   },
   methods: {
     input(e) {
-      this.inputValue = e.target.value
-      this.$emit('update:modelValue', this.inputValue)
+      this.inputValue = e.target.value;
+      this.$emit("update:modelValue", this.inputValue);
     },
     changePasswordVisibility() {
-      return (this.passwordIsVisible = !this.passwordIsVisible)
-    }
-  }
-}
+      return (this.passwordIsVisible = !this.passwordIsVisible);
+    },
+  },
+};
 </script>
 <style src="./style.styl" lang="stylus" scoped />

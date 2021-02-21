@@ -90,4 +90,18 @@ export default class Readings {
         this.ctx.config.globalProperties.$wait.end("get/reading");
       });
   }
+
+  create(payload) {
+    this.ctx.config.globalProperties.$wait.start("post/readings");
+    return this.ctx.$axios
+      .post("/repos/arieslab/study-database/issues", payload)
+      .then((result) => {
+        if (result && result.data) {
+          return this.setReadings(result.data);
+        }
+      })
+      .finally(() => {
+        this.ctx.config.globalProperties.$wait.end("post/readings");
+      });
+  }
 }
