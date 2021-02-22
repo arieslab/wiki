@@ -11,6 +11,15 @@
         v-model="token"
       />
       <Button class="v--bg-aries-orange">ENTRAR</Button>
+      <Spacing vertical="2">
+        <Line />
+      </Spacing>
+      <p>
+        Para criar um token no GitHub, basta acessar
+        <a href="https://github.com/settings/tokens" target="_blank"
+          >https://github.com/settings/tokens</a
+        >. Dê todas as permissões do tipo "repo", e a opção "read:user".
+      </p>
     </form>
   </div>
 </template>
@@ -19,6 +28,7 @@ export default {
   name: "Login",
   route: "/login",
   middleware: ["guest"],
+  title: "Login - Aries Lab",
   data() {
     return {
       token: "",
