@@ -1,13 +1,10 @@
 <template>
   <div class="p-readings">
     <Spacing bottom="2" class="v--flex">
-      <div class="v--flex v--flex-align-right" style="gap: 8px">
+      <div class="v--flex v--flex-align-right" style="gap: 2px">
         <Field
-          style="width: 250px"
+          style="width: 225px"
           type="search"
-          autocapitalize="off"
-          autocomplete="off"
-          autocorrect="off"
           name="q"
           placeholder="Pesquise por título ou texto"
           v-model="q"

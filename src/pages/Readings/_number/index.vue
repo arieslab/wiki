@@ -35,9 +35,25 @@
         {{ reading.title }}
       </h1>
       <Spacing vertical="4">
-        <div v-html="text" />
+        <div v-html="getText()" />
       </Spacing>
-      <Spacing class="p-reading__assignee">
+      <Spacing v-if="downloadables?.length" vertical="4">
+        <p>Arquivos</p>
+        <Spacing top="2" class="p-reading__downloadable">
+          <a
+            v-for="pdf in downloadables"
+            :key="pdf.url"
+            class="p-reading__downloadable-item"
+          >
+            <Icon name="download-cloud" />
+            <span>
+              {{ pdf.name }}
+            </span>
+          </a>
+        </Spacing>
+      </Spacing>
+      <p>Apresentado por:</p>
+      <Spacing top="2" class="p-reading__assignee">
         <img
           class="p-reading__assignee-avatar"
           :src="reading.assignee?.avatar_url"
@@ -80,6 +96,11 @@ export default {
   name: "TextPage",
   route: "/leituras/:number",
   layout: "painel",
+  data() {
+    return {
+      pdfs: [],
+    };
+  },
   beforeMount() {
     this.$store.readings
       .getReading(this.$route.params.number)
@@ -114,15 +135,14 @@ export default {
     reading() {
       return this.$store.readings.reading;
     },
-    text() {
-      return (
-        this.reading &&
-        this.reading.body
-          .replace(/\n/g, "<br/>")
-          .replace("<br/><br/>", "<br/>")
-          .replace("#authors", "<h2>Authors</h2>")
-          .replace("#summary", "<h2>Summary</h2>")
-      );
+    downloadables() {
+      return this.pdfs.map((i) => {
+        const arr = i.split("](");
+        return {
+          name: arr[0].replace("[", ""),
+          url: arr[1].replace(")", ""),
+        };
+      });
     },
   },
   methods: {
@@ -133,6 +153,25 @@ export default {
           labels: label,
         },
       });
+    },
+    getText() {
+      let text =
+        this.reading &&
+        this.reading.body
+          .replace(/\n/g, "<br/>")
+          .replace("<br/><br/>", "<br/>")
+          .replace("#authors", "<h2>Autores</h2>")
+          .replace("#summary", "<h2>Resumo crítico</h2>");
+
+      this.pdfs = text.match(
+        /[[.*\]]((http(s?)):\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()[\]{};:'".,<>?«»“”‘’]))?/g,
+      );
+
+      this.pdfs.forEach((i) => {
+        text = text.replace(i, "");
+      });
+
+      return text;
     },
   },
   unmounted() {

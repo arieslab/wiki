@@ -1,7 +1,19 @@
 <template>
   <div class="c-reading-card">
+    <Button
+      v-if="
+        $store.auth.user?.login &&
+          item.assignee?.login &&
+          $store.auth.user.login === item.assignee.login
+      "
+      style="float: right"
+    >
+      <Icon name="edit" size="13" />
+    </Button>
     <router-link :to="`/leituras/${item.number}`">
-      <h2 class="c-reading-card__title">{{ item.title }}</h2>
+      <h2 class="c-reading-card__title">
+        {{ item.title }}
+      </h2>
     </router-link>
     <div class="c-reading-card__tags">
       <Tag
@@ -17,6 +29,15 @@
       <Line />
     </Spacing>
     <p v-html="getText(item.body)" />
+    <Spacing vertical="1">
+      <Line />
+    </Spacing>
+    <div v-if="item.assignee" class="c-reading-card__assignee">
+      <img :src="item.assignee?.avatar_url" />
+      <a :href="item.assignee?.html_url" target="_blank"
+        >@{{ item.assignee?.login }}</a
+      >
+    </div>
   </div>
 </template>
 <script>
