@@ -60,6 +60,7 @@
           v-for="reading in $store.readings.relations"
           :key="reading.id"
           :item="reading"
+          @click-tag="labelSearch"
         />
       </div>
     </section>
@@ -125,6 +126,16 @@ export default {
           .replace("#authors", "<h2>Authors</h2>")
           .replace("#summary", "<h2>Summary</h2>")
       );
+    },
+  },
+  methods: {
+    labelSearch(label) {
+      this.$router.push({
+        path: "/leituras",
+        query: {
+          labels: label,
+        },
+      });
     },
   },
 };

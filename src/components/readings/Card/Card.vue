@@ -8,8 +8,10 @@
         v-for="label in item.labels"
         :key="label.id"
         :style="colorfy(label.name)"
-        >{{ label.name }}</Tag
+        @click="$emit('click-tag', label.name)"
       >
+        {{ label.name }}
+      </Tag>
     </div>
     <Spacing vertical="1">
       <Line />
@@ -22,6 +24,7 @@ import color from "@/helpers/color";
 
 export default {
   name: "ReadingCard",
+  emits: ["click-tag"],
   props: {
     item: {
       type: Object,

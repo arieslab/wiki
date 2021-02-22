@@ -52,6 +52,7 @@
             v-for="reading in $store.readings.readings"
             :key="reading.id"
             :item="reading"
+            @click-tag="label"
           />
         </template>
         <template v-else>
@@ -105,6 +106,18 @@ export default {
         .replace({
           ...this.$route,
           query: { ...this.$route.query, page },
+        })
+        .then(() => {
+          this.search();
+        });
+    },
+    label(label) {
+      this.labels = [label];
+
+      this.$router
+        .replace({
+          ...this.$route,
+          query: { ...this.$route.query, labels: [label].join(",") },
         })
         .then(() => {
           this.search();
