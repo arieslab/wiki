@@ -29,8 +29,11 @@ export default class Readings {
   }
 
   getReadings(params) {
-    this.ctx.config.globalProperties.$wait.start("get/readings");
+    this.state.nextPage = null;
+    this.state.lastPage = null;
 
+    this.ctx.config.globalProperties.$wait.start("get/readings");
+    const { page } = params;
     return this.ctx.$axios
       .get("/repos/arieslab/study-database/issues", {
         headers: {
@@ -42,6 +45,22 @@ export default class Readings {
         },
       })
       .then((result) => {
+        this.state.prevPage = null;
+        this.state.nextPage = null;
+        this.state.lastPage = null;
+
+        if (result.headers.link) {
+          const pages = result.headers.link
+            .match(/&page=[0-9]+/g)
+            .map((i) => parseInt(i.match(/[0-9]+/g)[0]))
+            .sort();
+
+          console.log(result.headers.link);
+
+          this.state.lastPage =
+            page > 1 && pages.length === 2 ? page : pages[pages.length - 1];
+        }
+
         if (result && result.data) {
           return this.setReadings(result.data);
         }
@@ -51,7 +70,7 @@ export default class Readings {
       });
   }
 
-  searchReadings({ q, labels }) {
+  searchReadings({ q, labels, page }) {
     this.ctx.config.globalProperties.$wait.start("get/readings");
     const lbls = labels.map((i) => `label:"${i}"`).join(" ");
     const query = `${q} repo:arieslab/study-database is:issue in:title,body ${lbls}`;
@@ -63,9 +82,20 @@ export default class Readings {
         params: {
           per_page: 10,
           q: query,
+          page,
         },
       })
       .then((result) => {
+        if (result.headers.link) {
+          const pages = result.headers.link
+            .match(/&page=[0-9]+/g)
+            .map((i) => parseInt(i.match(/[0-9]+/g)[0]))
+            .sort();
+
+          this.state.lastPage =
+            page > 1 && pages.length === 2 ? page : pages[pages.length - 1];
+        }
+
         if (result && result.data) {
           return this.setReadings(result.data.items);
         }
