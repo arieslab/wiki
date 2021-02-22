@@ -7,6 +7,7 @@
           $store.auth.user.login === item.assignee.login
       "
       style="float: right"
+      :to="`/leituras/${item.number}/editar`"
     >
       <Icon name="edit" size="13" />
     </Button>

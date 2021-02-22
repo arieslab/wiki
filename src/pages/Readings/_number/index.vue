@@ -138,13 +138,22 @@ export default {
       return this.$store.readings.reading;
     },
     downloadables() {
-      return this.pdfs.map((i) => {
-        const arr = i.split("](");
-        return {
-          name: arr[0].replace("[", ""),
-          url: arr[1].replace(")", ""),
-        };
-      });
+      return (
+        this.pdfs
+          ?.map((i) => {
+            const arr = i.split("](");
+            if (arr.length !== 2) {
+              return null;
+            }
+            return {
+              name: arr[0]
+                .replace("[", "")
+                .replace("Link do texto", "Texto para download"),
+              url: arr[1].replace(")", ""),
+            };
+          })
+          .filter((i) => i) || []
+      );
     },
   },
   methods: {
@@ -164,14 +173,14 @@ export default {
           .replace("<br/><br/>", "<br/>")
           .replace("#authors", "<h2>Autores</h2>")
           .replace("#summary", "<h2>Resumo crítico</h2>");
-
       this.pdfs = text.match(
-        /[[.*\]]((http(s?)):\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()[\]{};:'".,<>?«»“”‘’]))?/g,
+        /\[.*\]\(((http(s?)):\/\/|\b(?:[a-z\d]+\.))(?:(?:[^\s()<>]+|\((?:[^\s()<>]+|(?:\([^\s()<>]+\)))?\))+(?:\((?:[^\s()<>]+|(?:\(?:[^\s()<>]+\)))?\)|[^\s`!()[\]{};:'".,<>?«»“”‘’]))?\)/g,
       );
-
-      this.pdfs.forEach((i) => {
-        text = text.replace(i, "");
-      });
+      if (this.pdfs) {
+        this.pdfs.forEach((i) => {
+          text = text.replace(i, "");
+        });
+      }
 
       return text;
     },

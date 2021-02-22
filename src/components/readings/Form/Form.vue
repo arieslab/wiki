@@ -6,10 +6,17 @@
       </Button>
     </div>
     <div class="p-reading-create__body">
-      <Spacing bottom="2">
+      <Spacing v-if="type === 'create'" bottom="2">
         <h1>Criar leitura</h1>
         <p>
           Ao criar, você será a pessoa registrada como facilitadora da
+          discussão.
+        </p>
+      </Spacing>
+      <Spacing v-else bottom="2">
+        <h1>Editar leitura</h1>
+        <p>
+          Ao editar, você será a pessoa registrada como facilitadora da
           discussão.
         </p>
       </Spacing>
@@ -33,6 +40,7 @@
           rows="12"
           v-model="summary"
         />
+
         <Field
           :disabled="$wait.is('post/readings')"
           label="Tags"
@@ -46,44 +54,53 @@
           name="link"
           v-model="link"
         />
-        <Button
-          class="v--bg-aries-orange"
-          style="width:200px"
-          :loading="$wait.is('post/readings')"
-        >
-          Criar leitura
-        </Button>
+        <Spacing top="3">
+          <Button
+            class="v--bg-aries-orange"
+            style="width:200px"
+            :loading="$wait.is('post/readings')"
+          >
+            {{ type === "create" ? "Criar" : "Editar" }} leitura
+          </Button>
+        </Spacing>
       </form>
     </div>
   </div>
 </template>
 <script>
 export default {
-  name: "CreateReading",
-  route: "/leituras/opcoes/nova",
-  layout: "painel",
+  name: "ReadingForn",
+  props: {
+    item: {
+      type: Object,
+      default: () => ({}),
+    },
+    type: {
+      type: String,
+      default: "create",
+    },
+  },
   data() {
     return {
-      title: "",
-      authors: "",
-      summary: "",
-      labels: "",
-      link: "",
+      title: this.item.title || "",
+      authors: this.item.authors || "",
+      summary: this.item.summary || "",
+      labels: this.item.labels || "",
+      link: this.item.link || "",
     };
   },
   methods: {
     submit() {
       const body =
-        `#authors\n${this.authors}\n#summary\n${this.summary}` + this.link
-          ? `\n[Link do texto](${this.link})`
-          : "";
-      this.$store.readings
-        .create({
-          title: this.title,
-          body,
-          labels: this.labels.split(",").map((i) => i.trim()),
-          assignee: this.$store.auth?.user?.login,
-        })
+        `#authors\n${this.authors}\n#summary\n${this.summary}` +
+        (this.link ? `\n[Link do texto](${this.link})` : "");
+      this.$store.readings[this.type]({
+        title: this.title,
+        body,
+        labels: this.labels.split(",").map((i) => i.trim()),
+        assignee: this.$store.auth?.user?.login,
+        number: this.$route?.params?.number,
+      })
         .then(() => {
           this.$toast.success("Leitura criada!");
           this.$router.push("/leituras");

@@ -16,7 +16,7 @@
         :autocapitalize="autocapitalize"
         :autocorrect="autocorrect"
         :rows="rows"
-        :value="inputValue"
+        :value="modelValue"
         @input="input"
       />
     </fieldset>
@@ -30,6 +30,7 @@ export default {
   name: "FieldText",
   emits: ["update:modelValue"],
   props: {
+    modelValue: String,
     name: {
       type: String,
       required: true,
@@ -78,7 +79,6 @@ export default {
   data() {
     return {
       passwordIsVisible: false,
-      inputValue: this.value,
     };
   },
   computed: {
@@ -88,8 +88,7 @@ export default {
   },
   methods: {
     input(e) {
-      this.inputValue = e.target.value;
-      this.$emit("update:modelValue", this.inputValue);
+      this.$emit("update:modelValue", e.target.value);
     },
     changePasswordVisibility() {
       return (this.passwordIsVisible = !this.passwordIsVisible);

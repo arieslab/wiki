@@ -159,4 +159,18 @@ export default class Readings {
         this.ctx.config.globalProperties.$wait.end("post/readings");
       });
   }
+
+  patch(payload) {
+    this.ctx.config.globalProperties.$wait.start("post/readings");
+    return this.ctx.$axios
+      .patch("/repos/arieslab/study-database/issues/" + payload.number, payload)
+      .then((result) => {
+        if (result && result.data) {
+          return this.setReadings(result.data);
+        }
+      })
+      .finally(() => {
+        this.ctx.config.globalProperties.$wait.end("post/readings");
+      });
+  }
 }
