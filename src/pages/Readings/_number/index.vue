@@ -50,8 +50,14 @@
     <Spacing vertical="4">
       <Line />
     </Spacing>
+    <section v-if="$wait.is('get/relations')" class="p-reading__relations">
+      <Fake width="200px" />
+      <div class="p-reading__relations-list">
+        <CardLoading />
+      </div>
+    </section>
     <section
-      v-if="$store.readings.relations && $store.readings.relations.length"
+      v-else-if="$store?.readings?.relations"
       class="p-reading__relations"
     >
       <h2 class="p-reading__section-title">Leituras relacionadas</h2>
@@ -68,8 +74,9 @@
 </template>
 <script>
 import Card from "@/components/readings/Card/Card.vue";
+import CardLoading from "@/components/readings/Card/Loading.vue";
 export default {
-  components: { Card },
+  components: { Card, CardLoading },
   name: "TextPage",
   route: "/leituras/:number",
   layout: "painel",
@@ -77,20 +84,10 @@ export default {
     this.$store.readings
       .getReading(this.$route.params.number)
       .then((result) => {
-        const labels = result?.labels
-          ?.reduce(
-            (subsets, value) =>
-              subsets.concat(subsets.map((set) => [value.name, ...set])),
-            [[]],
-          )
-          .filter((i) => i.length)
-          .sort((a, b) =>
-            a.length < b.length ? 1 : a.length === b.length ? 0 : -1,
-          );
+        const labels = result?.labels.map((i) => i.name);
 
         function getReadings(i, $store) {
-          const list = labels[i].join(",");
-
+          const list = labels[i];
           if (i < labels.length) {
             return $store.readings
               .getRelations({ labels: list })
@@ -137,6 +134,10 @@ export default {
         },
       });
     },
+  },
+  unmounted() {
+    this.$store.readings.setReading(null);
+    this.$store.readings.setRelations(null);
   },
 };
 </script>
