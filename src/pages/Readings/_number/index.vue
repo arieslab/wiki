@@ -98,6 +98,7 @@ export default {
   name: "TextPage",
   route: "/leituras/:number",
   layout: "painel",
+  title: "Leitura - Aries Lab",
   data() {
     return {
       pdfs: [],

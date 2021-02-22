@@ -18,6 +18,7 @@ export default {
   route: "/leituras/:number/editar",
   name: "EditReading",
   layout: "painel",
+  title: "Editar leitura - Aries Lab",
   data() {
     return {
       pdfs: [],

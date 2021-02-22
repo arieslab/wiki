@@ -70,6 +70,7 @@ export default {
   components: { Card, CardLoading },
   name: "Readings",
   route: "/leituras",
+  title: "Leituras - Aries Lab",
   layout: "painel",
   data() {
     return {

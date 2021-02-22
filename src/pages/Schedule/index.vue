@@ -18,6 +18,7 @@ export default {
   alias: "/agenda",
   layout: "painel",
   middleware: ["auth"],
+  title: "Agenda - Aries Lab",
   data() {
     return {
       table: "",

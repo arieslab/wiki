@@ -62,6 +62,7 @@ export default {
   name: "CreateReading",
   route: "/leituras/opcoes/nova",
   layout: "painel",
+  title: "Criar leitura - Aries Lab",
   data() {
     return {
       title: "",
