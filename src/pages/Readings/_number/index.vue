@@ -44,6 +44,8 @@
             v-for="pdf in downloadables"
             :key="pdf.url"
             class="p-reading__downloadable-item"
+            :href="pdf.url"
+            target="_blank"
           >
             <Icon name="download-cloud" />
             <span>
