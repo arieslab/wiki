@@ -121,7 +121,11 @@ export default {
     },
     userOptions() {
       return [
-        { name: "Minhas leituras", to: "/leituras", icon: "book-open" },
+        // {
+        //   name: "Minhas leituras",
+        //   to: "/leituras?assignee=" + this.$store.auth.user.login,
+        //   icon: "book-open",
+        // },
         { name: "Sair", value: "logout", icon: "log-out" },
       ];
     },

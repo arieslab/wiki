@@ -88,6 +88,7 @@ export default {
       q: this.q,
       labels: this.labels.join(","),
       page: this.$route.query.page,
+      assignee: this.$route?.query?.assignee || null,
     };
     if (this.q) {
       this.$store.readings.searchReadings({ ...query, labels: this.labels });

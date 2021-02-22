@@ -41,5 +41,12 @@ export default class Auth {
         }
       });
   }
+
+  logout() {
+    localStorage.clear();
+    this.state.token = null;
+    this.state.user = null;
+    this.ctx.config.globalProperties.$router.push("/login");
+  }
 }
 export const auth = new Auth();
