@@ -56,7 +56,7 @@ export default {
         this.link = this.pdfs[0].split("](")[1].replace(")", "");
       }
 
-      return text;
+      return text.trim("\n");
     },
   },
 };
