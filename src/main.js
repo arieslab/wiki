@@ -1,12 +1,12 @@
 import { createApp } from "vue";
-import App from "./App.vue";
-import routerex from "@jprodrigues70/routerex";
 import toaster from "@meforma/vue-toaster";
 import wait from "@meforma/vue-wait-for";
 import global from "./components/global";
 import "./assets/css/main.styl";
 import axios from "./plugins/axios.js";
+import routerex from "./plugins/routerex";
 import store from "./store";
+import App from "./App.vue";
 
 const app = createApp(App);
 

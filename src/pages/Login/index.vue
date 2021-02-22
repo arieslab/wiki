@@ -10,7 +10,12 @@
         sublabel="O token ficará gravado localmente, para que você não precise voltar no GitHub quando quiser usar a plataforma novamente. Sendo assim, lembre-se de sair, caso esteja em um computador que não confia."
         v-model="token"
       />
-      <Button class="v--bg-aries-orange">ENTRAR</Button>
+      <Button
+        class="v--bg-aries-orange"
+        style="width: 150px"
+        :loading="$wait.is('login')"
+        >ENTRAR</Button
+      >
       <Spacing vertical="2">
         <Line />
       </Spacing>
@@ -36,15 +41,22 @@ export default {
   },
   methods: {
     submit() {
+      if (!this.token) {
+        this.$toast.error("Você precisa adicionar um token!");
+        return;
+      }
+      this.$wait.start("login");
       this.$store.auth
         .getUser({ token: this.token })
         .then(() => {
-          // console.log("deu certo?");
           this.$router.push("/agenda");
         })
         .catch(() => {
           this.$toast.error("Token inválido!");
           return;
+        })
+        .finally(() => {
+          this.$wait.end("login");
         });
     },
   },

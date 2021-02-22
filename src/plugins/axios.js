@@ -1,5 +1,5 @@
 import axios from "axios";
-import router from "@jprodrigues70/routerex";
+import router from "@/plugins/routerex";
 
 const BASEURL = "https://api.github.com/";
 
