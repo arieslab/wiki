@@ -18,7 +18,7 @@ export default class Labels {
 
   getLabels() {
     return this.ctx.$axios
-      .get("/repos/jprodrigues70/database-test/labels")
+      .get("/repos/arieslab/study-database/labels")
       .then((result) => {
         if (result && result.data) {
           return this.setLabels(result.data);

@@ -35,7 +35,7 @@ export default class Readings {
     this.ctx.config.globalProperties.$wait.start("get/readings");
     const { page } = params;
     return this.ctx.$axios
-      .get("/repos/jprodrigues70/database-test/issues", {
+      .get("/repos/arieslab/study-database/issues", {
         headers: {
           Accept: "application/vnd.github.squirrel-girl-preview",
         },
@@ -74,7 +74,7 @@ export default class Readings {
   searchReadings({ q, labels, page }) {
     this.ctx.config.globalProperties.$wait.start("get/readings");
     const lbls = labels.map((i) => `label:"${i}"`).join(" ");
-    const query = `${q} repo:jprodrigues70/database-test is:issue is:open in:title,body ${lbls}`;
+    const query = `${q} repo:arieslab/study-database is:issue is:open in:title,body ${lbls}`;
     return this.ctx.$axios
       .get("/search/issues", {
         headers: {
@@ -110,7 +110,7 @@ export default class Readings {
     this.ctx.config.globalProperties.$wait.start("get/relations");
 
     return this.ctx.$axios
-      .get("/repos/jprodrigues70/database-test/issues", {
+      .get("/repos/arieslab/study-database/issues", {
         headers: {
           Accept: "application/vnd.github.squirrel-girl-preview",
         },
@@ -132,7 +132,7 @@ export default class Readings {
   getReading(number) {
     this.ctx.config.globalProperties.$wait.start("get/reading");
     return this.ctx.$axios
-      .get(`/repos/jprodrigues70/database-test/issues/${number}`, {
+      .get(`/repos/arieslab/study-database/issues/${number}`, {
         headers: {
           Accept: "application/vnd.github.squirrel-girl-preview",
         },
@@ -150,7 +150,7 @@ export default class Readings {
   create(payload) {
     this.ctx.config.globalProperties.$wait.start("post/readings");
     return this.ctx.$axios
-      .post("/repos/jprodrigues70/database-test/issues", payload)
+      .post("/repos/arieslab/study-database/issues", payload)
       .then((result) => {
         if (result && result.data) {
           return this.setReadings(result.data);
@@ -164,10 +164,7 @@ export default class Readings {
   patch(payload) {
     this.ctx.config.globalProperties.$wait.start("post/readings");
     return this.ctx.$axios
-      .patch(
-        "/repos/jprodrigues70/database-test/issues/" + payload.number,
-        payload,
-      )
+      .patch("/repos/arieslab/study-database/issues/" + payload.number, payload)
       .then((result) => {
         if (result && result.data) {
           return this.setReadings(result.data);
