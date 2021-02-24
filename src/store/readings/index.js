@@ -35,12 +35,13 @@ export default class Readings {
     this.ctx.config.globalProperties.$wait.start("get/readings");
     const { page } = params;
     return this.ctx.$axios
-      .get("/repos/arieslab/study-database/issues", {
+      .get("/repos/jprodrigues70/database-test/issues", {
         headers: {
           Accept: "application/vnd.github.squirrel-girl-preview",
         },
         params: {
           per_page: 10,
+          state: "open",
           ...params,
         },
       })
@@ -73,7 +74,7 @@ export default class Readings {
   searchReadings({ q, labels, page }) {
     this.ctx.config.globalProperties.$wait.start("get/readings");
     const lbls = labels.map((i) => `label:"${i}"`).join(" ");
-    const query = `${q} repo:arieslab/study-database is:issue in:title,body ${lbls}`;
+    const query = `${q} repo:jprodrigues70/database-test is:issue is:open in:title,body ${lbls}`;
     return this.ctx.$axios
       .get("/search/issues", {
         headers: {
@@ -86,7 +87,7 @@ export default class Readings {
         },
       })
       .then((result) => {
-        if (result.headers.link) {
+        if (result?.headers?.link) {
           const pages = result.headers.link
             .match(/&page=[0-9]+/g)
             .map((i) => parseInt(i.match(/[0-9]+/g)[0]))
@@ -109,7 +110,7 @@ export default class Readings {
     this.ctx.config.globalProperties.$wait.start("get/relations");
 
     return this.ctx.$axios
-      .get("/repos/arieslab/study-database/issues", {
+      .get("/repos/jprodrigues70/database-test/issues", {
         headers: {
           Accept: "application/vnd.github.squirrel-girl-preview",
         },
@@ -131,7 +132,7 @@ export default class Readings {
   getReading(number) {
     this.ctx.config.globalProperties.$wait.start("get/reading");
     return this.ctx.$axios
-      .get(`/repos/arieslab/study-database/issues/${number}`, {
+      .get(`/repos/jprodrigues70/database-test/issues/${number}`, {
         headers: {
           Accept: "application/vnd.github.squirrel-girl-preview",
         },
@@ -149,7 +150,7 @@ export default class Readings {
   create(payload) {
     this.ctx.config.globalProperties.$wait.start("post/readings");
     return this.ctx.$axios
-      .post("/repos/arieslab/study-database/issues", payload)
+      .post("/repos/jprodrigues70/database-test/issues", payload)
       .then((result) => {
         if (result && result.data) {
           return this.setReadings(result.data);
@@ -163,7 +164,10 @@ export default class Readings {
   patch(payload) {
     this.ctx.config.globalProperties.$wait.start("post/readings");
     return this.ctx.$axios
-      .patch("/repos/arieslab/study-database/issues/" + payload.number, payload)
+      .patch(
+        "/repos/jprodrigues70/database-test/issues/" + payload.number,
+        payload,
+      )
       .then((result) => {
         if (result && result.data) {
           return this.setReadings(result.data);
