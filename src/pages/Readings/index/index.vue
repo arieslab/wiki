@@ -154,7 +154,11 @@ export default {
       const reverse = type === "labels" ? "authors" : "labels";
 
       if ($event?.target?.checked) {
-        this[type].push(filter.label.name);
+        if (type === "labels") {
+          this[type].push(filter.label.name);
+        } else {
+          this[type] = [filter.label.name];
+        }
       } else {
         this[type] = this[type].filter((i) => i !== filter.label.name);
       }
