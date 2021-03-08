@@ -89,7 +89,11 @@ export default {
       title: this.item.title || "",
       authors: this.item.authors || "",
       summary: this.item.summary || "",
-      labels: this.item.labels || "",
+      labels:
+        this.item.labels
+          .split(",")
+          .filter((i) => !i.trim().startsWith("author:"))
+          .join(",") || "",
       link: this.item.link || "",
     };
   },
