@@ -25,12 +25,14 @@
           :disabled="$wait.is('post/readings')"
           label="Título"
           name="title"
+          required
           v-model="title"
         />
         <Field
           :disabled="$wait.is('post/readings')"
           label="Autores"
           name="authors"
+          required
           v-model="authors"
         />
         <FieldText
@@ -38,6 +40,7 @@
           label="Seu resumo crítico"
           name="summary"
           rows="12"
+          required
           v-model="summary"
         />
 
@@ -46,6 +49,7 @@
           label="Tags"
           sublabel="Separe por vírgula"
           name="labels"
+          required
           v-model="labels"
         />
         <Field
@@ -94,10 +98,16 @@ export default {
       const body =
         `#authors\n${this.authors}\n#summary\n${this.summary}` +
         (this.link ? `\n[Link do texto](${this.link})` : "");
+      const authors = this.authors.split(",");
+      const firstAuthor = authors?.length ? "author:" + authors[0] : "";
+
       this.$store.readings[this.type]({
         title: this.title,
         body,
-        labels: this.labels.split(",").map((i) => i.trim()),
+        labels: this.labels
+          .split(",")
+          .map((i) => i.trim())
+          .concat(firstAuthor.trim()),
         assignee: this.$store.auth?.user?.login,
         number: this.$route?.params?.number,
       })

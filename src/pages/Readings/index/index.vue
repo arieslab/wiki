@@ -22,7 +22,7 @@
     <div class="p-readings__body">
       <div>
         <h2>Filtrar</h2>
-        <Spacing top="2" class="p-readings__filter">
+        <Spacing vertical="2" class="p-readings__filter">
           <div
             v-for="label in $store.labels.labels"
             :key="label.name"
@@ -32,7 +32,25 @@
               type="checkbox"
               :id="label.name"
               :checked="labels.includes(label.name)"
-              @change="filter({ type: 'label', label }, $event)"
+              @change="filter({ type: 'labels', label }, $event)"
+            />
+            <label :for="label.name">
+              {{ label.name }}
+            </label>
+          </div>
+        </Spacing>
+        <h2>Primeiro autor</h2>
+        <Spacing vertical="2" class="p-readings__filter">
+          <div
+            v-for="label in $store.labels.authors"
+            :key="label.name"
+            class="p-readings__filter-item"
+          >
+            <input
+              type="checkbox"
+              :id="label.name"
+              :checked="authors.includes(label.name)"
+              @change="filter({ type: 'authors', label }, $event)"
             />
             <label :for="label.name">
               {{ label.name }}
@@ -76,6 +94,7 @@ export default {
     return {
       table: "",
       labels: [],
+      authors: [],
       q: "",
     };
   },
@@ -84,15 +103,23 @@ export default {
     this.labels = this.$route.query.labels
       ? this.$route.query.labels.split(",")
       : [];
+    this.authors = this.$route.query.authors
+      ? this.$route.query.authors.split(",")
+      : [];
     this.q = this.$route.query.q;
     const query = {
       q: this.q,
       labels: this.labels.join(","),
       page: this.$route.query.page,
       assignee: this.$route?.query?.assignee || null,
+      authors: this.$route?.query?.authors || null,
     };
     if (this.q) {
-      this.$store.readings.searchReadings({ ...query, labels: this.labels });
+      this.$store.readings.searchReadings({
+        ...query,
+        labels: this.labels,
+        authors: this.authors,
+      });
     } else {
       this.$store.readings.getReadings(query);
     }
@@ -123,22 +150,26 @@ export default {
         });
     },
     filter(filter, $event) {
+      const { type } = filter;
+      const reverse = type === "labels" ? "authors" : "labels";
+
       if ($event?.target?.checked) {
-        this.labels.push(filter.label.name);
+        this[type].push(filter.label.name);
       } else {
-        this.labels = this.labels.filter((i) => i !== filter.label.name);
+        this[type] = this[type].filter((i) => i !== filter.label.name);
       }
 
       this.$router.replace({
         ...this.$route,
-        query: { ...this.$route.query, labels: this.labels.join(",") },
+        query: { ...this.$route.query, [type]: this[type].join(",") },
       });
 
       if (this.q && this.q.length >= 3) {
         this.search();
       } else {
         this.$store.readings.getReadings({
-          labels: this.labels.join(",") || null,
+          [reverse]: this[reverse].join(",") || null,
+          [type]: this[type].join(",") || null,
           page: this.$route.query.page,
         });
       }
@@ -150,6 +181,7 @@ export default {
           query: { ...this.$route.query, q: null },
         });
         this.$store.readings.getReadings({
+          authors: this.authors.join(",") || null,
           labels: this.labels.join(",") || null,
           page: this.$route.query.page,
         });
@@ -164,6 +196,7 @@ export default {
         this.$store.readings.searchReadings({
           q: this.q,
           labels: this.labels,
+          authors: this.authors,
           page: this.$route.query.page,
         });
       }

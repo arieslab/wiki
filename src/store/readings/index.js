@@ -33,7 +33,18 @@ export default class Readings {
     this.state.lastPage = null;
 
     this.ctx.config.globalProperties.$wait.start("get/readings");
-    const { page } = params;
+    const { page, authors } = params;
+
+    const authorsLabels = authors
+      ? "author:" + authors.replace(",", ",author:")
+      : "";
+
+    params.labels = params.labels
+      ? params.labels + "," + authorsLabels
+      : authorsLabels;
+
+    delete params.authors;
+
     return this.ctx.$axios
       .get("/repos/arieslab/study-database/issues", {
         headers: {
@@ -56,8 +67,6 @@ export default class Readings {
             .map((i) => parseInt(i.match(/[0-9]+/g)[0]))
             .sort();
 
-          console.log(result.headers.link);
-
           this.state.lastPage =
             page > 1 && pages.length === 2 ? page : pages[pages.length - 1];
         }
@@ -71,9 +80,12 @@ export default class Readings {
       });
   }
 
-  searchReadings({ q, labels, page }) {
+  searchReadings({ q, labels, authors, page }) {
     this.ctx.config.globalProperties.$wait.start("get/readings");
-    const lbls = labels.map((i) => `label:"${i}"`).join(" ");
+    const lbls =
+      labels.map((i) => `label:"${i}"`).join(" ") +
+      " " +
+      authors.map((i) => `label:"author:${i}"`).join(" ");
     const query = `${q} repo:arieslab/study-database is:issue is:open in:title,body ${lbls}`;
     return this.ctx.$axios
       .get("/search/issues", {

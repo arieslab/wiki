@@ -8,6 +8,7 @@ export default class Labels {
 
     this.state = reactive({
       labels: null,
+      authors: null,
     });
   }
 
@@ -16,12 +17,25 @@ export default class Labels {
     return labels;
   }
 
+  setAuthors(authors) {
+    this.state.authors = authors;
+    return authors;
+  }
+
   getLabels() {
     return this.ctx.$axios
       .get("/repos/arieslab/study-database/labels")
       .then((result) => {
         if (result && result.data) {
-          return this.setLabels(result.data);
+          this.setAuthors(
+            result.data
+              .filter((i) => i.name.startsWith("author:"))
+              .map((i) => ({ ...i, name: i.name.replace("author:", "") })),
+          );
+
+          return this.setLabels(
+            result.data.filter((i) => !i.name.startsWith("author:")),
+          );
         }
       });
   }

@@ -18,7 +18,7 @@
     </router-link>
     <div class="c-reading-card__tags">
       <Tag
-        v-for="label in item.labels"
+        v-for="label in labels"
         :key="label.id"
         :style="colorfy(label.name)"
         @click="$emit('click-tag', label.name)"
@@ -51,6 +51,11 @@ export default {
     item: {
       type: Object,
       default: () => {},
+    },
+  },
+  computed: {
+    labels() {
+      return this.item.labels.filter((i) => !i.name.startsWith("author:"));
     },
   },
   methods: {
