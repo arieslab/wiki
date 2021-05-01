@@ -32,6 +32,7 @@
           :disabled="$wait.is('post/readings')"
           label="Autores"
           name="authors"
+          sublabel="Separe por vírgula"
           required
           v-model="authors"
         />
@@ -90,8 +91,8 @@ export default {
       authors: this.item.authors || "",
       summary: this.item.summary || "",
       labels:
-        this.item.labels
-          .split(",")
+        this.item?.labels
+          ?.split(",")
           .filter((i) => !i.trim().startsWith("author:"))
           .join(",") || "",
       link: this.item.link || "",
